@@ -449,6 +449,121 @@
         }
 
 
+
+        /* ================= VIDEO SECTION ================= */
+
+        .video-section {
+            min-height: 100vh;
+            padding: 90px 20px 120px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-section h2 {
+            font-size: 38px;
+            margin-bottom: 15px;
+            color: #e1a7ff;
+            text-shadow: 0 0 20px #9d39ff;
+        }
+
+        .video-intro {
+            color: #aaaaaa;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+
+        .video-viewer {
+            width: 100%;
+            max-width: 750px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .video-card {
+            width: 100%;
+            max-width: 700px;
+            border-radius: 25px;
+            overflow: hidden;
+            border: 1px solid #b65cff66;
+            background: #12001f;
+            box-shadow: 0 0 35px #8e2cff44;
+            display: none;
+            animation: videoAppear 0.7s ease;
+        }
+
+        .video-card.active-video {
+            display: block;
+        }
+
+        .video-card video {
+            width: 100%;
+            height: 520px;
+            display: block;
+            object-fit: contain;
+            background: #08000f;
+        }
+
+        .video-label {
+            padding: 18px;
+            color: #e1a7ff;
+            font-size: 17px;
+            background: #0d0018;
+        }
+
+        .video-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .video-btn {
+            border: 1px solid #b65cff88;
+            padding: 12px 23px;
+            border-radius: 30px;
+            color: white;
+            background: #6e19bb88;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .video-btn:hover {
+            transform: scale(1.06);
+            background: #8d2bdb;
+            box-shadow: 0 0 25px #a83cff88;
+        }
+
+        .video-counter {
+            color: #cfa4ed;
+            font-size: 14px;
+            min-width: 70px;
+        }
+
+        .video-note {
+            margin-top: 18px;
+            color: #9f7bb5;
+            font-size: 14px;
+        }
+
+        @keyframes videoAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.94) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
         /* ================= FINAL ================= */
 
         .final {
@@ -617,6 +732,38 @@
                 padding: 11px 18px;
                 font-size: 14px;
             }
+
+
+            .video-section {
+                padding: 80px 15px 100px;
+            }
+
+            .video-section h2 {
+                font-size: 30px;
+            }
+
+            .video-intro {
+                font-size: 14px;
+            }
+
+            .video-card {
+                max-width: 100%;
+            }
+
+            .video-card video {
+                height: 70svh;
+                max-height: 600px;
+            }
+
+            .video-btn {
+                padding: 11px 18px;
+                font-size: 14px;
+            }
+
+            .video-note {
+                font-size: 13px;
+            }
+
 
         }
 
@@ -862,6 +1009,77 @@
 
 
 
+
+    <!-- ================= VIDEOS ================= -->
+
+    <section class="video-section" id="videos">
+
+        <h2>
+            A Few More Memories 🎥❤️
+        </h2>
+
+        <p class="video-intro">
+            Sit back and enjoy these little moments. ✨
+        </p>
+
+        <div class="video-viewer">
+
+            <!-- VIDEO 1 -->
+            <div class="video-card active-video">
+                <video
+                    id="video1"
+                    controls
+                    playsinline
+                    preload="metadata"
+                >
+                    <source src="video1.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+
+                <div class="video-label">
+                    A special little memory for you. ❤️
+                </div>
+            </div>
+
+            <!-- VIDEO 2 -->
+            <div class="video-card">
+                <video
+                    id="video2"
+                    controls
+                    playsinline
+                    preload="metadata"
+                >
+                    <source src="video2.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+
+                <div class="video-label">
+                    And one more beautiful moment. 💜
+                </div>
+            </div>
+
+            <div class="video-controls">
+                <button class="video-btn" id="previousVideoBtn" onclick="previousVideo()">
+                    ← Previous
+                </button>
+
+                <div class="video-counter" id="videoCounter">
+                    1 / 2
+                </div>
+
+                <button class="video-btn" id="nextVideoBtn" onclick="nextVideo()">
+                    Next →
+                </button>
+            </div>
+
+            <p class="video-note">
+                Video 2 will start automatically when Video 1 finishes. 🎬✨
+            </p>
+
+        </div>
+
+    </section>
+
     <!-- ================= FINAL ================= -->
 
     <section class="final">
@@ -1062,6 +1280,141 @@
 
         }
 
+
+
+
+        /* ================= VIDEO SLIDER ================= */
+
+        let currentVideo = 0;
+
+        const videoCards =
+            document.querySelectorAll(".video-card");
+
+        const videoElements =
+            document.querySelectorAll(".video-card video");
+
+        const videoCounter =
+            document.getElementById("videoCounter");
+
+
+        function stopAllVideos() {
+
+            videoElements.forEach(function (video) {
+                video.pause();
+            });
+
+        }
+
+
+        function showVideo(index, shouldPlay = false) {
+
+            if (index < 0) {
+                currentVideo = videoCards.length - 1;
+            } else if (index >= videoCards.length) {
+                currentVideo = 0;
+            } else {
+                currentVideo = index;
+            }
+
+            videoCards.forEach(function (card) {
+                card.classList.remove("active-video");
+            });
+
+            stopAllVideos();
+
+            videoCards[currentVideo]
+                .classList.add("active-video");
+
+            videoCounter.innerText =
+                (currentVideo + 1)
+                + " / "
+                + videoCards.length;
+
+            if (shouldPlay) {
+                const activeVideo =
+                    videoElements[currentVideo];
+
+                activeVideo.currentTime = 0;
+
+                activeVideo.play().catch(function () {
+                    // Browser autoplay policy may block playback
+                    // until the user presses the play button.
+                });
+            }
+        }
+
+
+        function nextVideo() {
+
+            showVideo(currentVideo + 1, true);
+
+        }
+
+
+        function previousVideo() {
+
+            showVideo(currentVideo - 1, false);
+
+        }
+
+
+        videoElements.forEach(function (video, index) {
+
+            video.addEventListener("ended", function () {
+
+                if (index < videoElements.length - 1) {
+
+                    showVideo(index + 1, true);
+
+                } else {
+
+                    // Keep the last video selected after it finishes.
+                    showVideo(index, false);
+
+                }
+
+            });
+
+        });
+
+
+        // Start from Video 1 when the video section enters the screen.
+        const videoSection =
+            document.querySelector(".video-section");
+
+        const videoSectionObserver =
+            new IntersectionObserver(
+                function (entries) {
+
+                    entries.forEach(function (entry) {
+
+                        if (entry.isIntersecting) {
+
+                            const firstVideo =
+                                videoElements[0];
+
+                            firstVideo.play().catch(function () {
+                                // User can press play if autoplay is blocked.
+                            });
+
+                            videoSectionObserver.unobserve(
+                                videoSection
+                            );
+
+                        }
+
+                    });
+
+                },
+                {
+                    threshold: 0.25
+                }
+            );
+
+
+        if (videoSection) {
+            videoSectionObserver.observe(videoSection);
+        }
 
 
         /* ================= SCROLL ANIMATIONS ================= */
